@@ -27,3 +27,7 @@ class Error(Schema):
 
 class DeviceLocationPatch(Schema):
     location_id: int | None = None
+
+
+class DeviceUpdateSchema(DeviceCreateSchema):
+    name: str | None = None
