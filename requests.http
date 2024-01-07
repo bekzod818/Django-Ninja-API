@@ -1,0 +1,27 @@
+POST http://127.0.0.1:8000/api/devices
+Content-Type: application/json
+
+{
+    "name": "New Sensor"
+}
+
+###
+GET http://127.0.0.1:8000/api/devices
+accept: application/json
+
+###
+POST http://127.0.0.1:8000/api/devices
+Content-Type: application/json
+
+{
+    "name": "New Sensor with Location",
+    "location_id": 1
+}
+
+###
+POST http://127.0.0.1:8000/api/devices/new-sensor/set-location
+Content-Type: application/json
+
+{
+    "location_id": 1
+}

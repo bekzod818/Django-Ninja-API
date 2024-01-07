@@ -8,13 +8,15 @@ class Location(models.Model):
 
     def __str__(self) -> str:
         return self.name
-    
+
 
 class Device(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=200)
-    slug = AutoSlugField(populate_from='name')
-    location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, blank=True)
+    slug = AutoSlugField(populate_from="name")
+    location = models.ForeignKey(
+        Location, on_delete=models.SET_NULL, null=True, blank=True
+    )
 
     def __str__(self) -> str:
         return f"{self.name} - {self.id}"
