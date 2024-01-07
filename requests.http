@@ -27,9 +27,14 @@ Content-Type: application/json
 }
 
 ###
-GET http://127.0.0.1:8000/api/devices/new-sensor
+PUT http://127.0.0.1:8000/api/devices/new-sensor
 Content-Type: application/json
 
 {
-    "location_id": 2
+    "location_id": 3,
+    "name": "New Sensor Updated"
 }
+
+
+###
+DELETE  http://127.0.0.1:8000/api/devices/new-sensor
