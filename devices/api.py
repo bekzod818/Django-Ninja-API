@@ -11,7 +11,7 @@ from .schemas import (
 )
 
 
-app = NinjaAPI()
+app = NinjaAPI(version="1.0.0")
 
 
 @app.get("/devices", response=list[DeviceSchema])
