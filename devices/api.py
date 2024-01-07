@@ -5,12 +5,13 @@ from .schemas import (
     LocationSchema,
     DeviceSchema,
     DeviceCreateSchema,
+    DeviceUpdateSchema,
     Error,
     DeviceLocationPatch,
 )
 
 
-app = NinjaAPI()
+app = NinjaAPI(version="1.0.0")
 
 
 @app.get("/devices", response=list[DeviceSchema])
@@ -35,6 +36,28 @@ def create_device(request, device: DeviceCreateSchema):
 def get_device_detail(request, slug: str):
     device = get_object_or_404(Device, slug=slug)
     return device
+
+
+@app.put("/devices/{slug}", response=DeviceSchema)
+def update_device(request, slug: str, device: DeviceUpdateSchema):
+    device_model = get_object_or_404(Device, slug=slug)
+    for attr, value in device.dict(
+        exclude_unset=True
+    ).items():  # Partial updates -> To allow the user to make partial updates, use payload.dict(exclude_unset=True).items(). This ensures that only the specified fields get updated.
+        if attr == "location_id":
+            location = get_object_or_404(Location, id=value)
+            device_model.location = location
+        else:
+            setattr(device_model, attr, value)
+    device_model.save()
+    return device_model
+
+
+@app.delete("/devices/{slug}")
+def delete_device(request, slug: str):
+    device = get_object_or_404(Device, slug=slug)
+    device.delete()
+    return {"deleted": True}
 
 
 @app.post("/devices/{device_slug}/set-location", response=DeviceSchema)

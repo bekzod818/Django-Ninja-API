@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "corsheaders",
     # My_apps
     "devices.apps.DevicesConfig",
+    "employee.apps.EmployeeConfig",
 ]
 
 MIDDLEWARE = [

@@ -1,4 +1,4 @@
-POST http://127.0.0.1:8000/api/devices
+POST http://127.0.0.1:8000/api/v1/devices
 Content-Type: application/json
 
 {
@@ -6,11 +6,11 @@ Content-Type: application/json
 }
 
 ###
-GET http://127.0.0.1:8000/api/devices
+GET http://127.0.0.1:8000/api/v1/devices
 accept: application/json
 
 ###
-POST http://127.0.0.1:8000/api/devices
+POST http://127.0.0.1:8000/api/v1/devices
 Content-Type: application/json
 
 {
@@ -19,9 +19,22 @@ Content-Type: application/json
 }
 
 ###
-POST http://127.0.0.1:8000/api/devices/new-sensor/set-location
+POST http://127.0.0.1:8000/api/v1/devices/new-sensor/set-location
 Content-Type: application/json
 
 {
     "location_id": 1
 }
+
+###
+PUT http://127.0.0.1:8000/api/v1/devices/new-sensor
+Content-Type: application/json
+
+{
+    "location_id": 3,
+    "name": "New Sensor Updated"
+}
+
+
+###
+DELETE  http://127.0.0.1:8000/api/v1/devices/new-sensor
