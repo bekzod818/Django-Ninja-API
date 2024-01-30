@@ -1,6 +1,8 @@
 from django.shortcuts import get_object_or_404
+from ninja_extra.ordering import ordering, Ordering
+from ninja_extra.searching import searching, Searching
 from ninja_extra.throttling import UserRateThrottle
-from ninja_extra import NinjaExtraAPI, api_controller, route, permissions, throttle
+from ninja_extra import NinjaExtraAPI, api_controller, route, permissions, throttle, paginate
 from .models import Location, Device
 from .schemas import (
     LocationSchema,
@@ -17,6 +19,8 @@ app = NinjaExtraAPI(version="1.0.0")
 @api_controller("/devices", tags=["Devices"], permissions=[permissions.IsAuthenticatedOrReadOnly])
 class DeviceController:
     @route.get("/", response=list[DeviceSchema], permissions=[])
+    @ordering(Ordering, ordering_fields=['id', 'location'])
+    @searching(Searching, search_fields=['=name', '=location__name'])
     @throttle
     def get_devices(self):
         return Device.objects.all()
@@ -79,7 +83,14 @@ class DeviceController:
 
 @api_controller("/locations", tags=["Locations"], permissions=[])
 class LocationController:
+    """
+    If you use the paginate decorator and the ordering decorator together, the paginate decorator should be above the ordering decorator because first the data are sorted and then the data are paginated, for example:
+    """
     @route.get("/", response=list[LocationSchema])
+    # @paginate()
+    @ordering(Ordering, ordering_fields=['name'])
+    # If you use the paginate decorator, the ordering decorator and the searching decorator together, the paginate decorator should be above the ordering decorator and the ordering decorator should be above the searching decorator because first the data is filtered, then the data is sorted and then paginated:, for example:
+    @searching(Searching, search_fields=['name'])
     def get_locations(self):
         return Location.objects.all()
 

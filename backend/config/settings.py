@@ -145,7 +145,8 @@ NINJA_EXTRA = {
     ],
     'THROTTLE_RATES': {
         'user': '1000/day',
-        'anon': '2/day',
+        'anon': '100/day',
     },
-    'NUM_PROXIES': None
+    'NUM_PROXIES': None,
+    'PAGINATION_CLASS': 'ninja_extra.pagination.PageNumberPaginationExtra',
 }
