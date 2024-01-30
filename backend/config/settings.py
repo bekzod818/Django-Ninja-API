@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # External_apps
     "django_extensions",
     "corsheaders",
+    "ninja_extra",
     # My_apps
     "devices.apps.DevicesConfig",
     "employee.apps.EmployeeConfig",
@@ -135,3 +136,16 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# django settings.py
+NINJA_EXTRA = {
+    'THROTTLE_CLASSES': [
+        "ninja_extra.throttling.AnonRateThrottle",
+        "ninja_extra.throttling.UserRateThrottle",
+    ],
+    'THROTTLE_RATES': {
+        'user': '1000/day',
+        'anon': '2/day',
+    },
+    'NUM_PROXIES': None
+}
