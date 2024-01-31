@@ -4,6 +4,7 @@ from ninja_extra.searching import searching, Searching
 from ninja_extra.throttling import UserRateThrottle
 from ninja_extra import NinjaExtraAPI, api_controller, route, permissions, throttle, paginate
 from .models import Location, Device
+from ninja_jwt.authentication import JWTAuth
 from .schemas import (
     LocationSchema,
     DeviceSchema,
@@ -12,6 +13,7 @@ from .schemas import (
     Error,
     DeviceLocationPatch,
 )
+from ninja_jwt.controller import NinjaJWTDefaultController
 
 
 app = NinjaExtraAPI(version="1.0.0")
@@ -46,7 +48,7 @@ class DeviceController:
         return device
 
 
-    @route.put("/{slug}", response=DeviceSchema)
+    @route.put("/{slug}", response=DeviceSchema, auth=JWTAuth())
     def update_device(request, slug: str, device: DeviceUpdateSchema):
         device_model = get_object_or_404(Device, slug=slug)
         for attr, value in device.dict(
@@ -61,7 +63,7 @@ class DeviceController:
         return device_model
 
 
-    @route.delete("/{slug}")
+    @route.delete("/{slug}", auth=JWTAuth())
     def delete_device(request, slug: str):
         device = get_object_or_404(Device, slug=slug)
         device.delete()
@@ -97,4 +99,5 @@ class LocationController:
 app.register_controllers(
     DeviceController,
     LocationController,
+    NinjaJWTDefaultController,
 )
